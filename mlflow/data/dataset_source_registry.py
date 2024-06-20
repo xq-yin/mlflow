@@ -32,8 +32,8 @@ class DatasetSourceRegistry:
                 self.register(entrypoint.load())
             except (AttributeError, ImportError) as exc:
                 warnings.warn(
-                    "Failure attempting to register dataset constructor"
-                    + f' "{entrypoint}": {exc}',
+                    f"Failure attempting to register dataset source with source type"
+                    f' "{entrypoint.source_type}": {exc}',
                     stacklevel=2,
                 )
 
