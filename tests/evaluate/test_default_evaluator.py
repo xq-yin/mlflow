@@ -32,8 +32,12 @@ from mlflow.metrics import (
     toxicity,
 )
 from mlflow.metrics.genai import model_utils
-from mlflow.metrics.genai.base import EvaluationExample, search_custom_metrics
-from mlflow.metrics.genai.genai_metric import make_genai_metric_from_prompt
+from mlflow.metrics.genai.base import EvaluationExample
+from mlflow.metrics.genai.genai_metric import (
+    _GENAI_CUSTOM_METRICS_FILE_NAME,
+    make_genai_metric_from_prompt,
+    search_custom_metrics,
+)
 from mlflow.metrics.genai.metric_definitions import answer_similarity
 from mlflow.models import Model
 from mlflow.models.evaluation.artifacts import (
@@ -45,7 +49,7 @@ from mlflow.models.evaluation.artifacts import (
     PickleEvaluationArtifact,
     TextEvaluationArtifact,
 )
-from mlflow.models.evaluation.base import evaluate
+from mlflow.models.evaluation.base import EvaluationMetric, evaluate
 from mlflow.models.evaluation.default_evaluator import (
     _GENAI_CUSTOM_METRICS_FILE_NAME,
     _compute_df_mode_or_mean,
@@ -4163,8 +4167,11 @@ def test_do_not_log_built_in_metrics_as_artifacts():
         artifacts = [a.path for a in client.list_artifacts(run.info.run_id)]
         assert _GENAI_CUSTOM_METRICS_FILE_NAME not in artifacts
 
+        results = search_custom_metrics(run_id=run.info.run_id)
+        assert len(results) == 0
 
-def test_log_llm_custom_metrics_as_artifacts():
+
+def test_log_genai_custom_metrics_as_artifacts():
     with mlflow.start_run() as run:
         model_info = mlflow.pyfunc.log_model(
             artifact_path="model", python_model=language_model, input_example=["a"]
@@ -4212,8 +4219,27 @@ def test_log_llm_custom_metrics_as_artifacts():
     assert table.loc[0, "version"] == "v1"
     assert table.loc[1, "name"] == "custom llm judge"
     assert table.loc[1, "version"] is None
-    # TODO(xq-yin) ML-41356: Validate metric_args value once we implement deser function
-    assert table.loc[0, "metric_args"] is not None
-    assert table.loc[1, "metric_args"] is not None
 
-    search_custom_metrics(run.info.run_id)
+    results = search_custom_metrics(run.info.run_id)
+    assert len(results) == 2
+    assert results[0].name == "answer_similarity"
+    assert results[1].name == "custom llm judge"
+
+    results = search_custom_metrics(run_id=run.info.run_id, name="custom llm judge")
+    assert len(results) == 1
+    assert results[0].name == "custom llm judge"
+
+    results = search_custom_metrics(run_id=run.info.run_id, version="v1")
+    assert len(results) == 1
+    assert results[0].name == "answer_similarity"
+
+    results = search_custom_metrics(run_id=run.info.run_id, name="answer_similarity", version="v1")
+    assert len(results) == 1
+    assert results[0].name == "answer_similarity"
+
+    results = search_custom_metrics(run_id=run.info.run_id, name="do not match")
+    assert len(results) == 0
+
+    results = search_custom_metrics(run_id=run.info.run_id, version="do not match")
+    assert len(results) == 0
+
