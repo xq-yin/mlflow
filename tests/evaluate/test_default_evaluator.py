@@ -49,7 +49,7 @@ from mlflow.models.evaluation.artifacts import (
     PickleEvaluationArtifact,
     TextEvaluationArtifact,
 )
-from mlflow.models.evaluation.base import EvaluationMetric, evaluate
+from mlflow.models.evaluation.base import evaluate
 from mlflow.models.evaluation.default_evaluator import (
     _GENAI_CUSTOM_METRICS_FILE_NAME,
     _compute_df_mode_or_mean,
@@ -4242,4 +4242,3 @@ def test_log_genai_custom_metrics_as_artifacts():
 
     results = search_custom_metrics(run_id=run.info.run_id, version="do not match")
     assert len(results) == 0
-
