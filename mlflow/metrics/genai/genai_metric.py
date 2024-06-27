@@ -599,3 +599,41 @@ def make_genai_metric(
         metric_metadata=metric_metadata,
         genai_metric_args=genai_metric_args,
     )
+
+def _filter_by_field(df, field_name, value):
+    return df[df[field_name] == value]
+
+def _deserialize_genai_metric_args(args):
+    raise ValueError("hhhh", args)
+    return
+
+def search_custom_metrics(
+    run_id: str,
+    name: Optional[str] = None,
+    version: Optional[str] = None,
+) -> List[EvaluationMetric]:
+    """
+        TODO: add docstring
+    """
+    client = mlflow.MlflowClient()
+    artifacts = [a.path for a in client.list_artifacts(run_id)]
+    if _GENAI_CUSTOM_METRICS_FILE_NAME not in artifacts:
+        _logger.warning("No custom metric definitions were found for this evaluation run.")
+        return []
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        downloaded_artifact_path = mlflow.artifacts.download_artifacts(
+        run_id=run_id,
+        artifact_path=_GENAI_CUSTOM_METRICS_FILE_NAME,
+        dst_path=tmpdir,
+    )
+    custom_metrics = client._read_from_file(downloaded_artifact_path)
+    if name is not None:
+        custom_metrics = _filter_by_field(custom_metrics, "name", name)
+    if version is not None:
+        custom_metrics = _filter_by_field(custom_metrics, "version", version)
+    metric_args_list = custom_metrics["metric_args"].tolist()
+    results = []
+    for args in metric_args_list:
+        results.append(_deserialize_genai_metric_args(args))
+    return results

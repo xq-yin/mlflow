@@ -32,7 +32,7 @@ from mlflow.metrics import (
     toxicity,
 )
 from mlflow.metrics.genai import model_utils
-from mlflow.metrics.genai.base import EvaluationExample
+from mlflow.metrics.genai.base import EvaluationExample, search_custom_metrics
 from mlflow.metrics.genai.genai_metric import make_genai_metric_from_prompt
 from mlflow.metrics.genai.metric_definitions import answer_similarity
 from mlflow.models import Model
@@ -4215,3 +4215,5 @@ def test_log_llm_custom_metrics_as_artifacts():
     # TODO(xq-yin) ML-41356: Validate metric_args value once we implement deser function
     assert table.loc[0, "metric_args"] is not None
     assert table.loc[1, "metric_args"] is not None
+
+    search_custom_metrics(run.info.run_id)
