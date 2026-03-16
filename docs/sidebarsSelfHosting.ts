@@ -105,6 +105,11 @@ const sidebarsSelfHosting: SidebarsConfig = {
           id: 'deploy-to-cloud/aws',
           label: 'AWS',
         },
+        {
+          type: 'doc',
+          id: 'deploy-to-cloud/azure',
+          label: 'Azure',
+        },
       ],
     },
     {
