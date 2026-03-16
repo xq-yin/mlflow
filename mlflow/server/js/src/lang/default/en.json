@@ -730,6 +730,10 @@
     "defaultMessage": "Compare",
     "description": "Compare evaluation runs action"
   },
+  "2kNo2y": {
+    "defaultMessage": "Tool Error Rates",
+    "description": "Title for the tool error rates section"
+  },
   "2mRfvl": {
     "defaultMessage": "Request error",
     "description": "A title shown on the experiment page if the runs request fails"
@@ -1213,6 +1217,10 @@
     "defaultMessage": "Unable to load experiment judges",
     "description": "Error message when experiment judges page fails to load"
   },
+  "6Wa6vB": {
+    "defaultMessage": "All tools",
+    "description": "Label for tool selector when all tools are selected"
+  },
   "6WitMT": {
     "defaultMessage": "Alert sends a webhook notification. <link>Learn how to set up webhooks.</link>",
     "description": "Tooltip explaining budget exceeded actions and webhook setup"
@@ -1572,10 +1580,6 @@
   "8biXJJ": {
     "defaultMessage": "Select output type",
     "description": "Placeholder for output type selection"
-  },
-  "8cK5xK": {
-    "defaultMessage": "{count} selected",
-    "description": "Label for selector showing count of selected items"
   },
   "8eVxXM": {
     "defaultMessage": "Cancel",
@@ -2492,6 +2496,10 @@
     "defaultMessage": "Edit the request body below and click Send request to call the endpoint.",
     "description": "Try it description for unified"
   },
+  "ECkDrg": {
+    "defaultMessage": "{count} selected",
+    "description": "Label for item selector showing count of selected items"
+  },
   "ED1+Xu": {
     "defaultMessage": "Prompts & versions",
     "description": "Label for the versions section in the MLflow experiment navbar"
@@ -3025,6 +3033,10 @@
   "I2UqCo": {
     "defaultMessage": "Search registered models",
     "description": "Placeholder text inside model search bar"
+  },
+  "I9bJ/T": {
+    "defaultMessage": "Select All",
+    "description": "Option to select all items in the item selector"
   },
   "IAyAgH": {
     "defaultMessage": "Move up",
@@ -4835,10 +4847,6 @@
     "defaultMessage": "Guidelines should not be empty",
     "description": "Tooltip message when guidelines are empty"
   },
-  "UJWipj": {
-    "defaultMessage": "Select All",
-    "description": "Option to select all items in the selector"
-  },
   "ULljUX": {
     "defaultMessage": "Filter: {filterString}",
     "description": "Filter display for scorer"
@@ -5844,6 +5852,10 @@
   "aUOkOC": {
     "defaultMessage": "The chunk-relevance-precision LLM judge determines whether the chunks returned by the retriever are relevant to the input request. Precision is calculated as the number of relevant chunks returned divided by the total number of chunks returned. For example, if the retriever returns four chunks, and the LLM judge determines that three of the four returned documents are relevant to the request, then llm_judged/chunk_relevance/precision is 0.75.",
     "description": "Evaluation results > known type of evaluation result assessment > chunk relevance judge."
+  },
+  "aVIoIw": {
+    "defaultMessage": "No tools selected",
+    "description": "Label for tool selector when no tools are selected"
   },
   "aW3CeS": {
     "defaultMessage": "Bound {date}",
