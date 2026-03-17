@@ -7,6 +7,11 @@ from mlflow.genai.evaluation.rate_limiter import (
     eval_retry_context,
     is_rate_limit_error,
 )
+from mlflow.genai.judges.adapters.litellm_adapter import (
+    _get_litellm_retry_policy,
+    is_litellm_rate_limit_retries_disabled,
+)
+from mlflow.utils.rest_utils import is_429_retry_disabled
 
 
 class FakeClock:
@@ -324,15 +329,37 @@ def test_call_with_retry_reports_throttle_and_success():
     assert limiter._rps < 10.0
 
 
-# ── eval_retry_context tests (no-op stub — real tests in PR 2) ──
+# ── eval_retry_context tests ──
 
 
-def test_eval_retry_context_is_noop():
+def _retry_flags_active():
+    """Check that both downstream retry-suppression flags are set."""
+    return is_litellm_rate_limit_retries_disabled() and is_429_retry_disabled()
+
+
+def test_eval_retry_context_sets_and_resets():
+    assert not _retry_flags_active()
+
     with eval_retry_context():
-        pass  # Should not raise
+        assert _retry_flags_active()
+
+    assert not _retry_flags_active()
 
 
-def test_eval_retry_context_nests_without_error():
+def test_eval_retry_context_nests():
+    assert not _retry_flags_active()
+
     with eval_retry_context():
+        assert _retry_flags_active()
         with eval_retry_context():
-            pass
+            assert _retry_flags_active()
+        assert _retry_flags_active()
+
+    assert not _retry_flags_active()
+
+
+def test_litellm_retry_policy_disables_rate_limit_retries_when_flag_set():
+    with eval_retry_context():
+        policy = _get_litellm_retry_policy(3)
+    assert policy.RateLimitErrorRetries == 0
+    assert policy.TimeoutErrorRetries == 3
