@@ -1816,6 +1816,7 @@ def test_gateway_crud_telemetry(mock_requests, mock_telemetry_client: TelemetryC
             "has_fallback_config": False,
             "routing_strategy": None,
             "num_model_configs": 1,
+            "usage_tracking": True,
         },
     )
 
@@ -1854,6 +1855,7 @@ def test_gateway_crud_telemetry(mock_requests, mock_telemetry_client: TelemetryC
             "has_fallback_config": False,
             "routing_strategy": None,
             "num_model_configs": None,
+            "usage_tracking": None,
         },
     )
 
