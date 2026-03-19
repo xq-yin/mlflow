@@ -780,8 +780,8 @@ def _assert_item_type_string(x):
 
 
 def _assert_secret_value(x):
-    """Validate secret_value is a non-empty dict without ever printing the values in errors."""
-    if not x:
+    """Validate secret_value is present. Does not print values in errors."""
+    if x is None:
         raise MlflowException(
             message="Missing value for required parameter 'secret_value'.",
             error_code=INVALID_PARAMETER_VALUE,
