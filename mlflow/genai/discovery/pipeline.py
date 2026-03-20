@@ -520,6 +520,8 @@ def discover_issues(
         A :class:`DiscoverIssuesResult` with discovered issues, run IDs,
         and a summary report.
     """
+    from mlflow.server.jobs.progress import update_status_details
+
     pipeline_start = time.time()
     token_counter = _TokenCounter()
     model = model or DEFAULT_MODEL
@@ -527,6 +529,7 @@ def discover_issues(
     exp_id = experiment_id or _get_experiment_id()
 
     # ---- Phase 1: Triage ----
+    update_status_details({"stage": "Sampling traces for analysis..."})
     sample_size = MLFLOW_GENAI_DISCOVERY_TRIAGE_SAMPLE_SIZE.get()
     if traces is not None:
         triage_traces = list(traces)
@@ -575,10 +578,13 @@ def discover_issues(
             (traces for traces in session_groups.values() if get_session_id(traces[0])),
             None,
         )
+
+    update_status_details({"stage": "Verifying configuration..."})
     verify_scorer(
         scorers[0], test_session[0] if test_session else triage_traces[0], session=test_session
     )
 
+    update_status_details({"stage": "Identifying issues from traces..."})
     with mlflow.start_run(run_id=run_id, tags={MLFLOW_RUN_TYPE: MLFLOW_RUN_TYPE_ISSUE_DETECTION}):
         triage_eval = mlflow.genai.evaluate(
             data=triage_traces,
@@ -632,6 +638,7 @@ def discover_issues(
         )
 
     # ---- Phase 2: Build analyses ----
+    update_status_details({"stage": "Analyzing results..."})
     analyses, session_groups = _build_analyses(
         triage_traces,
         triage.rationale_map,
@@ -641,6 +648,7 @@ def discover_issues(
     )
 
     # ---- Phase 3: Cluster & identify ----
+    update_status_details({"stage": "Clustering issues..."})
     identified = _cluster_and_identify(
         analyses, model, max_issues, categories=categories, token_counter=token_counter
     )
@@ -655,6 +663,7 @@ def discover_issues(
         )
 
     # ---- Phase 4: Build issues & annotate ----
+    update_status_details({"stage": "Annotating issues..."})
     issues, issue_trace_ids = _build_issues(identified, analyses, exp_id, triage_eval.run_id)
 
     trace_to_session: dict[str, str] = {}
@@ -681,6 +690,7 @@ def discover_issues(
         token_counter=token_counter,
     )
 
+    update_status_details({"stage": "Generating summary..."})
     summary = build_summary(issues, len(triage_traces))
     _logger.info("Done. Found %d issues across %d traces.", len(issues), len(triage_traces))
 
