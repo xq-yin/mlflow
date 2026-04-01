@@ -1,6 +1,6 @@
 import { Global } from '@emotion/react';
 import { clamp, values, isString } from 'lodash';
-import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { Suspense, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import {
   Button,
@@ -32,7 +32,9 @@ import {
 import { DEFAULT_WORKFLOW_LAYOUT_CONFIG, EXPANDED_WORKFLOW_LAYOUT_CONFIG } from './graph-view/GraphView.types';
 import { computeWorkflowPathToRoot } from './graph-view/GraphView.utils';
 import { computeWorkflowLayout } from './graph-view/GraphView.workflow';
-import { GraphViewWorkflowCanvas } from './graph-view/GraphViewWorkflowCanvas';
+const GraphViewWorkflowCanvas = React.lazy(() =>
+  import('./graph-view/GraphViewWorkflowCanvas').then((m) => ({ default: m.GraphViewWorkflowCanvas })),
+);
 import { GraphViewSpanNavigator } from './graph-view/GraphViewSpanNavigator';
 import { useGraphTreeLinkedState } from './graph-view/useGraphTreeLinkedState';
 
@@ -344,14 +346,16 @@ export const ModelTraceExplorerDetailView = ({
         </div>
       </div>
 
-      <GraphViewWorkflowCanvas
-        layout={workflowLayout}
-        selectedNodeId={selectedWorkflowNode?.id ?? null}
-        highlightedPathNodeIds={highlightedWorkflowNodeIds}
-        highlightedPathEdgeIds={highlightedWorkflowEdgeIds}
-        onSelectNode={handleSelectWorkflowNode}
-        onViewSpanDetails={handleViewSpanDetails}
-      />
+      <Suspense fallback={null}>
+        <GraphViewWorkflowCanvas
+          layout={workflowLayout}
+          selectedNodeId={selectedWorkflowNode?.id ?? null}
+          highlightedPathNodeIds={highlightedWorkflowNodeIds}
+          highlightedPathEdgeIds={highlightedWorkflowEdgeIds}
+          onSelectNode={handleSelectWorkflowNode}
+          onViewSpanDetails={handleViewSpanDetails}
+        />
+      </Suspense>
     </div>
   );
 
