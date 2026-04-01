@@ -2,7 +2,7 @@ import type { RowSelectionState, OnChangeFn, ColumnDef, Row } from '@tanstack/re
 import { getCoreRowModel, getSortedRowModel } from '@tanstack/react-table';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { isNil } from 'lodash';
-import React, { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { Empty, SearchIcon, Table, useDesignSystemTheme } from '@databricks/design-system';
 import { useIntl } from '@databricks/i18n';
@@ -20,12 +20,6 @@ import { MemoizedGenAiTracesTableSessionGroupedRows } from './GenAiTracesTableSe
 import { GenAiTracesTableHeader } from './GenAiTracesTableHeader';
 import { groupTracesBySessionForTable } from './utils/SessionGroupingUtils';
 import { HeaderCellRenderer } from './cellRenderers/HeaderCellRenderer';
-const GenAITraceComparisonModal = React.lazy(() =>
-  import('./components/GenAITraceComparisonModal').then((m) => ({ default: m.GenAITraceComparisonModal })),
-);
-const GenAiEvaluationTracesReviewModal = React.lazy(() =>
-  import('./components/GenAiEvaluationTracesReviewModal').then((m) => ({ default: m.GenAiEvaluationTracesReviewModal })),
-);
 import type { GetTraceFunction } from './hooks/useGetTrace';
 import { REQUEST_TIME_COLUMN_ID, SESSION_COLUMN_ID, SERVER_SORTABLE_INFO_COLUMNS } from './hooks/useTableColumns';
 import {
@@ -44,6 +38,15 @@ import {
 import { getAssessmentAggregates } from './utils/AggregationUtils';
 import { escapeCssSpecialCharacters } from './utils/DisplayUtils';
 import { getExperimentIdFromTraceLocation, getRowIdFromEvaluation } from './utils/TraceUtils';
+
+const GenAITraceComparisonModal = React.lazy(() =>
+  import('./components/GenAITraceComparisonModal').then((m) => ({ default: m.GenAITraceComparisonModal })),
+);
+const GenAiEvaluationTracesReviewModal = React.lazy(() =>
+  import('./components/GenAiEvaluationTracesReviewModal').then((m) => ({
+    default: m.GenAiEvaluationTracesReviewModal,
+  })),
+);
 
 export const GenAiTracesTableBody = React.memo(
   // eslint-disable-next-line react-component-name/react-component-name -- TODO(FEINF-4716)
@@ -614,7 +617,7 @@ export const GenAiTracesTableBody = React.memo(
             )}
           </Table>
         </div>
-        <Suspense fallback={null}>
+        <React.Suspense fallback={null}>
           {comparedTraceIds && shouldUseUnifiedModelTraceComparisonUI() ? (
             <GenAITraceComparisonModal
               traceIds={comparedTraceIds}
@@ -639,7 +642,7 @@ export const GenAiTracesTableBody = React.memo(
               />
             )
           )}
-        </Suspense>
+        </React.Suspense>
       </>
     );
   },
