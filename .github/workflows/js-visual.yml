@@ -1,0 +1,77 @@
+name: JS Visual Regression
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+    paths:
+      - mlflow/server/js/src/**
+      - mlflow/server/js/tests/visual/**
+      - .github/workflows/js-visual.yml
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  visual-regression:
+    if: github.event.pull_request.draft == false
+    permissions:
+      contents: read
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mlflow/server/js
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: "3.10"
+
+      - name: Install MLflow
+        working-directory: .
+        run: pip install -e .
+
+      - name: Start MLflow server
+        working-directory: .
+        run: |
+          mlflow ui --port 5000 &
+          # Wait for backend to be ready
+          timeout 60 bash -c 'until curl -s http://localhost:5000/health > /dev/null 2>&1; do sleep 2; done'
+
+      - name: Build and serve frontend
+        run: |
+          yarn build
+          npx serve -s build -l 3000 &
+          # Wait for frontend to be ready
+          timeout 30 bash -c 'until curl -s http://localhost:3000 > /dev/null 2>&1; do sleep 2; done'
+
+      - name: Run visual regression tests
+        run: yarn test:visual
+
+      - name: Upload diff artifacts on failure
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: visual-regression-diffs
+          path: mlflow/server/js/tests/visual/test-results/
+          retention-days: 7
