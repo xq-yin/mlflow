@@ -398,6 +398,7 @@ ignore = [
 
 [tool.ruff.lint.per-file-ignores]
 "dev/*" = ["T201", "PT018"]
+"dev/benchmarks/*" = ["T20"]
 "examples/*" = ["T20", "RET504", "E501"]
 "docs/*" = ["T20", "RET504", "E501"]
 "mlflow/*" = ["PT018"]
