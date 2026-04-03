@@ -136,8 +136,8 @@ class InstructionsJudge(Judge):
                            latency-aware evaluation. Default is False for backward compatibility.
             kwargs: Additional configuration parameters
         """
-        # TODO: Allow aggregations once we support boolean/numeric judge outputs
-        super().__init__(name=name, description=description, aggregations=[], **kwargs)
+        aggregations = kwargs.pop("aggregations", None)
+        super().__init__(name=name, description=description, aggregations=aggregations, **kwargs)
 
         if not name or not isinstance(name, str):
             raise MlflowException(
