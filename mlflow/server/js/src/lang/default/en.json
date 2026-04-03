@@ -3,6 +3,10 @@
     "defaultMessage": "Relevant",
     "description": "Evaluation results > retrieval relevancy assessment > positive value label. Displayed if evaluation result is considered as relevant to the query."
   },
+  "++zf1V": {
+    "defaultMessage": "Temperature",
+    "description": "Playground temperature label"
+  },
   "+/Zrmm": {
     "defaultMessage": "Temperature",
     "description": "Label for temperature input"
@@ -1886,6 +1890,10 @@
     "defaultMessage": "Group by: {value}",
     "description": "Experiment page > group by runs control > trigger button label > with value"
   },
+  "AFISDb": {
+    "defaultMessage": "Playground",
+    "description": "Playground page title"
+  },
   "AFrm2A": {
     "defaultMessage": "Created {date}",
     "description": "Gateway > Endpoint bindings drawer > Created date"
@@ -2642,6 +2650,10 @@
     "defaultMessage": "Endpoint Name",
     "description": "Label for endpoint name input"
   },
+  "FSOkx2": {
+    "defaultMessage": "Cancel",
+    "description": "Cancel system prompt button"
+  },
   "FTx+Hi": {
     "defaultMessage": "(baseline)",
     "description": "A label displayed next to baseline version in the prompt versions comparison view"
@@ -2793,6 +2805,10 @@
   "GRaplV": {
     "defaultMessage": "Context sufficiency",
     "description": "Evaluation results > known type of evaluation result assessment > context sufficiency assessment. Used to indicate if the retrieved context is sufficient to generate the expected response. Label displayed if user provided custom value, e.g. \"Context Sufficiency: mostly sufficient\""
+  },
+  "GXQwGF": {
+    "defaultMessage": "Max tokens",
+    "description": "Playground max tokens label"
   },
   "GXayIF": {
     "defaultMessage": "Predict on a Pandas DataFrame:",
@@ -3614,6 +3630,10 @@
     "defaultMessage": "Calls",
     "description": "Column header for call count"
   },
+  "MNphoR": {
+    "defaultMessage": "Parameters",
+    "description": "Playground settings popover title"
+  },
   "MP+H1B": {
     "defaultMessage": "No webhooks configured. Create one to get started. <link>Learn more about webhooks.</link>",
     "description": "Empty state for webhooks list"
@@ -4046,6 +4066,10 @@
     "defaultMessage": "Classification",
     "description": "Label for experiments focused on classification modeling"
   },
+  "P0hT4l": {
+    "defaultMessage": "Save",
+    "description": "Save system prompt button"
+  },
   "P31kXd": {
     "defaultMessage": "Cost breakdown",
     "description": "Header for span cost breakdown"
@@ -4244,6 +4268,10 @@
   "QHTLV9": {
     "defaultMessage": "Models",
     "description": "Label for the logged models tab in the MLflow experiment navbar"
+  },
+  "QIkY25": {
+    "defaultMessage": "Add system prompt",
+    "description": "Playground add system prompt button"
   },
   "QJ5wvd": {
     "defaultMessage": "Input for the trace",
@@ -4819,6 +4847,10 @@
   "U4s/77": {
     "defaultMessage": "Show more",
     "description": "Button to expand alert description"
+  },
+  "U7mQZo": {
+    "defaultMessage": "Playground",
+    "description": "Sidebar link for playground"
   },
   "U82iv6": {
     "defaultMessage": "Registered Models",
@@ -5967,6 +5999,10 @@
     "defaultMessage": "Data Type",
     "description": "Field label for assessment data type in an edit form"
   },
+  "bBqBgK": {
+    "defaultMessage": "These parameters control the generation process of the model.",
+    "description": "Playground settings description"
+  },
   "bCdY2j": {
     "defaultMessage": "Add \"{label}\"",
     "description": "Evaluation review > assessments > add new custom value element"
@@ -6479,6 +6515,10 @@
     "defaultMessage": "Click to hide the run",
     "description": "A tooltip for the \"hide\" icon button in the runs chart tooltip"
   },
+  "eGE+TD": {
+    "defaultMessage": "Send a message to start chatting with this endpoint.",
+    "description": "Playground empty state with endpoint selected"
+  },
   "eIWfRN": {
     "defaultMessage": "Discard",
     "description": "Evaluation review > assessments > discard pending assessments button label"
@@ -6950,6 +6990,10 @@
   "hIBLi9": {
     "defaultMessage": "Violates guidelines",
     "description": "Evaluation results > guideline adherence assessment > negative value label. Displayed if evaluation result does not adhere to the guidelines."
+  },
+  "hIGXnK": {
+    "defaultMessage": "System Prompt:",
+    "description": "Playground system prompt label"
   },
   "hJcrnh": {
     "defaultMessage": "Provider",
@@ -8639,6 +8683,10 @@
     "defaultMessage": "Registered Models",
     "description": "Text for link back to model page under the header on the model view page"
   },
+  "rcc/dG": {
+    "defaultMessage": "Select an endpoint to start chatting.",
+    "description": "Playground empty state without endpoint"
+  },
   "rcdaen": {
     "defaultMessage": "Refresh evaluation runs",
     "description": "Aria label for the refresh evaluation runs button in the evaluation runs table controls"
@@ -9231,6 +9279,10 @@
     "defaultMessage": "Back to experiment list",
     "description": "Tooltip for experiments button"
   },
+  "vvY4Ee": {
+    "defaultMessage": "Clear chat",
+    "description": "Clear playground chat button"
+  },
   "vwD2zW": {
     "defaultMessage": "Unified APIs",
     "description": "Unified APIs tab title"
@@ -9706,6 +9758,10 @@
   "yoD1c7": {
     "defaultMessage": "Usage Tracking",
     "description": "Section title for usage tracking configuration"
+  },
+  "ypdJDs": {
+    "defaultMessage": "Reset",
+    "description": "Reset system prompt button"
   },
   "yrsFOP": {
     "defaultMessage": "Datasets",

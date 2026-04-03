@@ -8,6 +8,7 @@ import {
   HomeIcon,
   KeyIcon,
   ModelsIcon,
+  PlayIcon,
   Tag,
   TextBoxIcon,
   Typography,
@@ -25,6 +26,7 @@ import { Link, matchPath, useLocation, useParams, useSearchParams } from '../uti
 import ExperimentTrackingRoutes from '../../experiment-tracking/routes';
 import { ModelRegistryRoutes } from '../../model-registry/routes';
 import GatewayRoutes from '../../gateway/routes';
+import PlaygroundRoutes from '../../playground/routes';
 import { GatewayNewTag } from './GatewayNewTag';
 import { FormattedMessage } from 'react-intl';
 import { useLogTelemetryEvent } from '../../telemetry/hooks/useLogTelemetryEvent';
@@ -53,6 +55,7 @@ const isModelsActive = (location: Location) => Boolean(matchPath('/models/*', lo
 const isPromptsActive = (location: Location) => Boolean(matchPath('/prompts/*', location.pathname));
 const isGatewayActive = (location: Location) => Boolean(matchPath('/gateway/*', location.pathname));
 const isApiKeysActive = (location: Location) => Boolean(matchPath('/gateway/api-keys', location.pathname));
+const isPlaygroundActive = (location: Location) => Boolean(matchPath('/playground/*', location.pathname));
 const isSettingsActive = (location: Location) => Boolean(matchPath('/settings/*', location.pathname));
 
 type MlFlowSidebarMenuDropdownComponentId =
@@ -233,6 +236,16 @@ export function MlflowSidebar({
                 children: <FormattedMessage defaultMessage="API Keys" description="Sidebar link for API keys" />,
               },
               componentId: 'mlflow.sidebar.api_keys_tab_link',
+            },
+            {
+              key: 'playground',
+              icon: <PlayIcon />,
+              linkProps: {
+                to: PlaygroundRoutes.playgroundPageRoute,
+                isActive: isPlaygroundActive,
+                children: <FormattedMessage defaultMessage="Playground" description="Sidebar link for playground" />,
+              },
+              componentId: 'mlflow.sidebar.playground_tab_link',
             },
           ]
         : []),
